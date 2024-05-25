@@ -1,11 +1,90 @@
-const spenderAddress = "0xF63f9e1adc2ba9B3BE16D0aE12506400f7A6c4a1";
+require("dotenv").config();
+const fetch = require("node-fetch");
+const fs = require("fs");
+const path = require("path");
+const axios = require("axios");
+const FormData = require("form-data");
 
+const factoryAddress = "0x4B6772a737eCC47326911b7073d7D079A94D80F8";
+
+let infura_authToken;
+let secretKey = process.env.INFURA_API_KEY;
+let secretKeyAPI = process.env.INFURA_KEY_SECRET;
+infura_authToken = secretKey + ":" + secretKeyAPI;
+
+async function generateImage(eventTitle) {
+  const apiKey = process.env.JIGSAWSTACK_API_KEY;
+  const endpoint = "https://api.jigsawstack.com/v1/ai/image_generation";
+
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-api-key": apiKey,
+    },
+    body: JSON.stringify({
+      prompt:
+        "create a single POAP badge for volunteers that participated in a event titled ${eventTitle}",
+      size: "small",
+      model: "sd1.5",
+    }),
+  };
+
+  try {
+    const result = await fetch(endpoint, options);
+    if (!result.ok) {
+      const errorDetails = await result.text();
+      throw new Error(
+        `HTTP error! status: ${result.status}, details: ${errorDetails}`
+      );
+    }
+    const blob = await result.blob();
+    console.log("Blob done");
+    // Create a buffer from the blob
+    const arrayBuffer = await blob.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+
+    // Upload the buffer to IPFS
+    const ipfsLink = await uploadFile(buffer);
+    return ipfsLink;
+  } catch (error) {
+    console.error("Error generating image:", error);
+  }
+}
+
+async function uploadFile(buffer) {
+  const formData = new FormData();
+  formData.append("file", buffer, {
+    filename: "generated_image.png",
+    contentType: "image/png",
+  });
+
+  try {
+    const response = await axios.post(
+      "https://ipfs.infura.io:5001/api/v0/add",
+      formData,
+      {
+        headers: {
+          ...formData.getHeaders(),
+          Authorization:
+            "Basic " + Buffer.from(infura_authToken).toString("base64"),
+        },
+      }
+    );
+    const added = response.data;
+    let ipfs_link = "https://hacksg.infura-ipfs.io/ipfs/" + added.Hash;
+    ipfs_link = ipfslink + "#";
+    return ipfs_link;
+  } catch (error) {
+    console.error("Error uploading file:", error);
+  }
+}
 let account;
 const connectMetamask = async () => {
   if (typeof window.ethereum !== "undefined") {
     const accounts = await ethereum.request({ method: "eth_requestAccounts" });
     account = accounts[0];
-    document.getElementById("accountArea").innerHTML =
+    document.getElementById("wallet").innerHTML =
       "Connected wallet address: " + account;
 
     // hide button after connecting
@@ -16,167 +95,25 @@ const connectMetamask = async () => {
   }
 };
 
-const sendDonation = async () => {
-  var donateVal = document.getElementById("donateVal").value;
-  var tokenAddress = document.getElementById("tokenAddress").value;
-
-  // if usdc
-  if (tokenAddress == "0xbE00A68C2fa82E39b27933464261E5a55A36fE4F") {
-    approvalAddress = "0xbE00A68C2fa82E39b27933464261E5a55A36fE4F";
-
-    // if xsgd
-  } else if (tokenAddress == "0xD27Fa8D3C51EDa3F78233dBEa36058c9E77D4139") {
-    approvalAddress = "0xD27Fa8D3C51EDa3F78233dBEa36058c9E77D4139";
-  }
+const deployPOAP = async () => {
+  var titleOfPOAP = document.getElementById("name").value;
+  var ipfslink = await generateImage(titleOfPOAP);
 
   approvalInstance = await new Web3(window.ethereum);
-  approvalContract = await new approvalInstance.eth.Contract(
-    approval_ABI,
-    approvalAddress
+  factoryContract = await new approvalInstance.eth.Contract(
+    factory_ABI,
+    factoryAddress
   );
-  const allowance = await approvalContract.methods
-    .allowance(account, spenderAddress)
-    .call();
-
-  if (allowance == 0) {
-    approvalContract.methods
-      .approve(spenderAddress, donateVal * 10 ** 6)
-      .send({ from: account })
-      .on("transactionHash", (hash) => {
-        $("#txStatus").text("Transaction Hash:" + hash);
-      })
-      .on("receipt", (receipt) => {
-        $("#txStatus").text(
-          "Approved ! Execute it again to perform the donation !"
-        );
-      })
-      .on("error", (error) => {
-        $("#txStatus").text("An error occurred, please try again !");
-      });
-  } else if (allowance > 0) {
-    donationInstance = await new Web3(window.ethereum);
-    donationContract = await new donationInstance.eth.Contract(
-      donation_ABI,
-      spenderAddress
-    );
-
-    // As POC, Proposal Number is hardcoded
-    donationContract.methods
-      .donateWithChoice(donateVal * 10 ** 6, 1, tokenAddress)
-      .send({ from: account })
-      .on("transactionHash", (hash) => {
-        $("#txStatus").text("Transaction Hash:" + hash);
-      })
-      .on("receipt", (receipt) => {
-        $("#txStatus").text("Successfully Contributed !");
-      })
-      .on("error", (error) => {
-        $("#txStatus").text("An error occurred, please try again !");
-      });
-  }
-};
-
-const createProposal = async () => {
-  var URL = "www.minds.org.sg/donation/";
-  console.log(URL);
-
-  var amountNeeded = document.getElementById("proposalNeeded").value;
-  console.log(amountNeeded);
-
-  var donateToAddress = document.getElementById("proposalNeeded").value;
-
-  // insufficet time to troublesome and not hardcode
-  var donateToAddress = "0x7a5EAE523975516A0f92F889caFD88c30B6fA656";
-
-  console.log(donateToAddress);
-  var durationInDays = document.getElementById("proposalDuration").value;
-  console.log(proposalDuration);
-
-  donationInstance = await new Web3(window.ethereum);
-  donationContract = await new donationInstance.eth.Contract(
-    donation_ABI,
-    spenderAddress
-  );
-
-  // As POC, Proposal URL is hardcoded
-  donationContract.methods
-    .addProposal(URL, amountNeeded * 10 ** 6, donateToAddress, durationInDays)
+  const deployPOAP = await factoryContract.methods
+    .deployPOAP(account, "POAP NAME", "PN", ipfslink)
     .send({ from: account })
     .on("transactionHash", (hash) => {
       $("#txStatus").text("Transaction Hash:" + hash);
     })
     .on("receipt", (receipt) => {
-      $("#txStatus").text("Proposal was Created Successfully !");
-      //        document.getElementById("proposalProof").innerHTML = "Proposal was Created Successfully ! ";
+      $("#txStatus").text("Successfully deployed poap !");
     })
     .on("error", (error) => {
       $("#txStatus").text("An error occurred, please try again !");
     });
-};
-
-const matchDonation = async () => {
-  var proposalID = document.getElementById("proposalID").value;
-  var amtToMatch = document.getElementById("amtToMatch").value;
-  var ratioToMatch = document.getElementById("ratioToMatch").value;
-  var tokenAddress = document.getElementById("tokenAddress").value;
-
-  // if usdc
-  if (tokenAddress == "0xbE00A68C2fa82E39b27933464261E5a55A36fE4F") {
-    approvalAddress = "0xbE00A68C2fa82E39b27933464261E5a55A36fE4F";
-
-    // if xsgd
-  } else if (tokenAddress == "0xD27Fa8D3C51EDa3F78233dBEa36058c9E77D4139") {
-    approvalAddress = "0xD27Fa8D3C51EDa3F78233dBEa36058c9E77D4139";
-  }
-
-  approvalInstance = await new Web3(window.ethereum);
-  approvalContract = await new approvalInstance.eth.Contract(
-    approval_ABI,
-    approvalAddress
-  );
-  const allowance = await approvalContract.methods
-    .allowance(account, spenderAddress)
-    .call();
-
-  if (allowance == 0) {
-    approvalContract.methods
-      .approve(spenderAddress, amtToMatch * 10 ** 6)
-      .send({ from: account })
-      .on("transactionHash", (hash) => {
-        $("#txStatus").text("Transaction Hash:" + hash);
-      })
-      .on("receipt", (receipt) => {
-        $("#txStatus").text(
-          "Approved ! Execute it again to perform the matching !"
-        );
-      })
-      .on("error", (error) => {
-        $("#txStatus").text("An error occurred, please try again !");
-      });
-  } else if (allowance > 0) {
-    matchInstance = await new Web3(window.ethereum);
-    matchContract = await new matchInstance.eth.Contract(
-      donation_ABI,
-      spenderAddress
-    );
-
-    // As POC, Proposal Number is hardcoded
-    matchContract.methods
-      .matchDonation(
-        proposalID,
-        amtToMatch * 10 ** 6,
-        ratioToMatch * 100,
-        tokenAddress
-      )
-      .send({ from: account })
-      .on("transactionHash", (hash) => {
-        $("#txStatus").text("Transaction Hash:" + hash);
-      })
-      .on("receipt", (receipt) => {
-        $("#txStatus").text("Successfully Matched !");
-      })
-      .on("error", (error) => {
-        $("#txStatus").text("An error occurred, please try again !");
-      });
-  }
 };

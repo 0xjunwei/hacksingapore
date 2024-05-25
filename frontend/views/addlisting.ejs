@@ -41,10 +41,10 @@
                         </a>
                     </div>
                 </div>
-                <div class="col-lg-3 offset-lg-7">
+                <div class="col-lg-2 offset-lg-8">
                     <div class="header__right">
                         <a href="./create-listing.html"><span class="icon_pencil-edit"></span></a>
-                        <button type="button" class="btn btn-dark" id="wallet">Connect Wallet</button>
+                        <a href="./login.html"><span class="icon_profile"></span></a>
                     </div>
                 </div>
             </div>
@@ -61,35 +61,41 @@
                     <div class="section-title">
                         <h4>Create Listing</h4>
                     </div>
-                    <form class="create-listing">
+                    <form class="create-listing" action="/upload" method="POST" enctype="multipart/form-data">
                         <div class="form-row">
                           <div class="form-group col-lg-12">
-                            <label for="title"><p>Title</p></label>
-                            <input type="text" class="form-control" id="title">
+                            <label for="name"><p>Name</p></label>
+                            <input type="text" class="form-control" id="name" name="name">
                           </div>
                           <div class="form-group col-lg-12">
-                            <label for="description"><p>Description</p></label>
-                            <textarea type="text" class="form-control" id="description"></textarea>
+                            <label for="info"><p>Description</p></label>
+                            <textarea type="text" class="form-control" id="info" name="info"></textarea>
                           </div>
                         </div>
                         <div class="form-group">
-                          <label for="inputAddress"><p>Address</p></label>
-                          <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+                          <label for="place"><p>Address</p></label>
+                          <input type="text" class="form-control" id="place" name="place" placeholder="1234 Main St">
                         </div>
                         <div class="form-row">
                           <div class="form-group col-lg-6">
-                            <label for="startDate"><p>Start Date</p></label>
-                            <input type="date" class="form-control" id="startDate">
+                            <label for="start"><p>Start Date</p></label>
+                            <input type="date" class="form-control" id="start" name="start">
                           </div>
                           <div class="form-group col-lg-6">
-                            <label for="endDate"><p>End Date</p></label>
-                            <input type="date" class="form-control" id="endDate">
+                            <label for="end"><p>End Date</p></label>
+                            <input type="date" class="form-control" id="end" name="end">
                           </div>
+                        </div>
+                        <div class="form-group col-lg-6">
+                        <br>
+                        <button class="btn btn-secondary" type="button">Deploy POAP</button>
+                        <br>
+                        <br>
                         </div>
                         <p>Upload Image</p>
                         <div class="custom-file col-lg-6">
-                            <input type="file" class="custom-file-input" id="customFile" onchange="updateFileName(this)">
-                            <label class="custom-file-label" for="customFile" id="customLabel">Choose image</label>
+                            <input type="file" class="custom-file-input" id="poster" name="poster" onchange="updateFileName(this)">
+                            <label class="custom-file-label" for="poster" id="customLabel">Choose image</label>
                         </div>
                         <button class="offset-lg-2 btn btn-primary" type="submit">Submit form</button>
                     </form>

@@ -1,0 +1,42 @@
+npm install express
+npm install dotenv
+npm install ejs
+
+
+sudo apt install mysql-server
+
+sudo mysql
+CREATE USER 'devj'@'localhost' IDENTIFIED BY 'devjrocks';
+exit
+
+sudo mysql -u root -p
+GRANT ALL PRIVILEGES ON *.* TO 'devj'@'localhost' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+exit
+
+sudo mysql -u devj -p
+DROP USER 'root'@'localhost';
+FLUSH PRIVILEGES;
+
+CREATE TABLE USERS (
+    UID INT AUTO_INCREMENT PRIMARY KEY,
+    EMAIL VARCHAR(255) NOT NULL,
+    FNAME VARCHAR(255) NOT NULL,
+    LNAME VARCHAR(255) NOT NULL,
+    PASS VARCHAR(255) NOT NULL,
+    ORG VARCHAR(255) NOT NULL,
+    INFO TEXT
+);
+
+
+CREATE TABLE EVENTS (
+    EID INT AUTO_INCREMENT PRIMARY KEY,
+    NAME VARCHAR(128) NOT NULL,
+    INFO TEXT NOT NULL,
+    PLACE TEXT NOT NULL,
+    START DATE NOT NULL,
+    END DATE,
+    POAP VARCHAR(32) NOT NULL,
+    POSTER BLOB
+);
+

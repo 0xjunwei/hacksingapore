@@ -331,11 +331,17 @@ ol {
 }
 
 .header__logo {
-	padding: 20px 0 17px;
+	width: auto;
+    height: 100%;
 }
 
 .header__logo a {
 	display: inline-block;
+}
+
+.header__logo img {
+	width: auto;
+	max-height: 100%;
 }
 
 .header__menu {
@@ -1797,6 +1803,26 @@ ol {
 	top: 13px;
 }
 
+.login__form form .input__choose input[type="radio"] {
+    display: none; /* Hide the actual radio button */
+}
+
+/* Style for the radio button label */
+.login__form form .input__choose input[type="radio"] + label {
+    display: inline-block;
+    cursor: pointer;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+/* Style for the selected radio button label */
+.login__form form .input__choose input[type="radio"]:checked + label {
+    background-color: #e53637; /* Change background color when selected */
+    color: #fff; /* Change text color when selected */
+}
+
 .login__form form button {
 	border-radius: 0;
 	margin-top: 10px;
@@ -1827,64 +1853,6 @@ ol {
 	padding: 12px 42px;
 }
 
-.login__social {
-	padding-top: 52px;
-}
-
-.login__social__links {
-	text-align: center;
-}
-
-.login__social__links span {
-	color: #ffffff;
-	display: block;
-	font-size: 13px;
-	font-weight: 700;
-	letter-spacing: 2px;
-	text-transform: uppercase;
-	margin-bottom: 30px;
-}
-
-.login__social__links ul li {
-	list-style: none;
-	margin-bottom: 15px;
-}
-
-.login__social__links ul li:last-child {
-	margin-bottom: 0;
-}
-
-.login__social__links ul li a {
-	color: #ffffff;
-	display: block;
-	font-size: 13px;
-	font-weight: 700;
-	letter-spacing: 2px;
-	text-transform: uppercase;
-	width: 460px;
-	padding: 14px 0;
-	position: relative;
-	margin: 0 auto;
-}
-
-.login__social__links ul li a.facebook {
-	background: #4267b2;
-}
-
-.login__social__links ul li a.google {
-	background: #ff4343;
-}
-
-.login__social__links ul li a.twitter {
-	background: #1da1f2;
-}
-
-.login__social__links ul li a i {
-	font-size: 20px;
-	position: absolute;
-	left: 32px;
-	top: 14px;
-}
 
 /*---------------------
   Sign Up
@@ -1896,13 +1864,13 @@ ol {
 }
 
 .signup .login__form:after {
-	height: 450px;
+	height: 550px;
 }
 
 .signup .login__form h5 {
 	font-size: 15px;
 	color: #ffffff;
-	margin-top: 36px;
+	margin-bottom: 10px;
 }
 
 .signup .login__form h5 a {
@@ -1910,21 +1878,15 @@ ol {
 	font-weight: 700;
 }
 
-.signup .login__social__links {
-	text-align: left;
-	padding-left: 40px;
+.signup .login__form label {
+	display: inline-block;
+	margin-bottom: 10px; /* Adjust as needed */
+	font-size: 16px; /* Adjust font size as needed */
+	color: #777; /* Text color */
 }
 
-.signup .login__social__links h3 {
-	color: #ffffff;
-	font-weight: 700;
-	font-family: "Oswald", sans-serif;
-	margin-bottom: 30px;
-}
-
-.signup .login__social__links ul li a {
-	margin: 0;
-	text-align: center;
+.signup .login__form label	.selected {
+    font-weight: bold; /* Example: make selected labels bold */
 }
 
 /*---------------------
@@ -2018,9 +1980,6 @@ ol {
 	.login__form {
 		position: relative;
 		padding-left: 32px;
-	}
-	.login__social__links ul li a {
-		width: 380px;
 	}
 	.blog__item__text {
 		padding: 0 50px;

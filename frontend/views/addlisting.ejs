@@ -88,7 +88,7 @@
                         </div>
                         <div class="form-group col-lg-6">
                         <br>
-                        <button class="btn btn-secondary" id="poap" type="button" onclick="deployPOAP()">Deploy POAP</button>
+                        <button class="btn btn-secondary" id="poap" type="button" onclick="deployPOAP()" disabled>Deploy POAP</button>
                         <br>
                         <div id="txStatus" style="color: white;"></div>
                         <br>
@@ -140,10 +140,12 @@
             account = accounts[0];
             document.getElementById("wallet").innerHTML =
             "Connected";
+            document.getElementById("poap").disabled = false;
         } else {
             console.log("Please install MetaMask.");
         }
         };
+        // Modify to your contract address
         const factoryAddress = "0x4B6772a737eCC47326911b7073d7D079A94D80F8";
         async function deployPOAP() {
             const titleOfPOAP = document.getElementById("name").value;

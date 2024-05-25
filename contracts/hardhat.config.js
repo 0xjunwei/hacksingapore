@@ -6,6 +6,7 @@ require("dotenv").config();
 /** @type import('hardhat/config').HardhatUserConfig */
 
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
+const SIGNUP_WALLET = process.env.SIGNER_WALLET;
 const ARBI_SEPOLIA_RPC_URL = process.env.ARBI_SEPOLIA_RPC_URL;
 const AMOY_RPC_URL = process.env.AMOY_RPC_URL;
 const ETHERSCAN_API = process.env.ETHERSCAN_API;
@@ -21,7 +22,7 @@ module.exports = {
     },
     sepolia: {
       url: ARBI_SEPOLIA_RPC_URL,
-      accounts: [PRIVATE_KEY],
+      accounts: [PRIVATE_KEY, SIGNUP_WALLET],
       gasPrice: "auto",
       chainId: 421614,
     },

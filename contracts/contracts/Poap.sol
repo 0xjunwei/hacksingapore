@@ -9,7 +9,10 @@ contract Poap is ERC721, Ownable {
     uint256 private _nextTokenId;
     string public poapURL;
     uint256 public tokenSupply;
+    uint256 public volunteerSignUp;
     address[] public holders;
+    bool public signUpEnabled;
+    mapping(address => bool) private signUpWallet;
     mapping(address => uint256) private holderIndex; 
 
     constructor(
@@ -19,13 +22,28 @@ contract Poap is ERC721, Ownable {
         string memory _poapURL
     ) ERC721(_poapName, _poapShortName) Ownable(initialOwner) {
         poapURL = _poapURL;
+        signUpEnabled = true;
     }
 
     function _baseURI() internal view override returns (string memory) {
         return poapURL;
     }
 
+    // Function for the owner to enable or disable sign-ups
+    function toggleSignUp() public onlyOwner {
+        signUpEnabled = !signUpEnabled;
+    }
+
+    // Function to sign up a volunteer
+    function signUp() public {
+        require(signUpEnabled, "Sign-ups are currently disabled.");
+        require(!signUpWallet[msg.sender], "You have already signed up.");
+        signUpWallet[msg.sender] = true;
+        volunteerSignUp++;
+    }
+
     function safeMint(address to) public onlyOwner {
+        require(signUpWallet[to], "Address has not signed up.");
         require(balanceOf(to) == 0, "Address already owns a POAP");
         uint256 tokenId = _nextTokenId++;
         _safeMint(to, tokenId);

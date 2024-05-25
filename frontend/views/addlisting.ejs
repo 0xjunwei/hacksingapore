@@ -90,6 +90,7 @@
                         <br>
                         <button class="btn btn-secondary" id="poap" type="button" onclick="deployPOAP()">Deploy POAP</button>
                         <br>
+                        <div id="txStatus"></div>
                         <br>
                         </div>
                         <p>Upload Image</p>
@@ -97,7 +98,7 @@
                             <input type="file" class="custom-file-input" id="poster" name="poster" onchange="updateFileName(this)">
                             <label class="custom-file-label" for="poster" id="customLabel">Choose image</label>
                         </div>
-                        <button class="offset-lg-2 btn btn-primary" type="submit">Submit form</button>
+                        <button class="offset-lg-2 btn btn-primary" id="submitForm" type="submit" disabled>Submit form</button>
                     </form>
                 </div>
             </div>
@@ -129,7 +130,57 @@
     <script src="js/jquery.nice-select.min.js"></script>
     <script src="js/mixitup.min.js"></script>
     <script src="js/factory_ABI.js"></script>
-    <script src="js/deploypoap.js"></script>
+    <!-- Include Web3.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.6.0/dist/web3.min.js"></script>
+    <script>
+        let account;
+        const connectMetamask = async () => {
+        if (typeof window.ethereum !== "undefined") {
+            const accounts = await ethereum.request({ method: "eth_requestAccounts" });
+            account = accounts[0];
+            document.getElementById("wallet").innerHTML =
+            "Connected";
+        } else {
+            console.log("Please install MetaMask.");
+        }
+        };
+        const factoryAddress = "0x4B6772a737eCC47326911b7073d7D079A94D80F8";
+        async function deployPOAP() {
+            const titleOfPOAP = document.getElementById("name").value;
+            try {
+                const response = await fetch('/generateImage', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ eventTitle: titleOfPOAP })
+                });
+
+                const data = await response.json();
+                const ipfsLink = data.ipfsLink;
+
+                const approvalInstance = new Web3(window.ethereum);
+                const factoryContract = new approvalInstance.eth.Contract(factory_ABI, factoryAddress);
+                
+                const tx = factoryContract.methods.deployPOAP(account, "POAP NAME", "PN", ipfsLink).send({ from: account });
+
+                tx.on("transactionHash", (hash) => {
+                    document.getElementById("txStatus").innerText = "Transaction Hash: " + hash;
+                });
+
+                const receipt = await tx;
+
+                document.getElementById("txStatus").innerText += "\nSuccessfully deployed POAP!";
+                document.getElementById("submitForm").disabled = false;
+
+            } catch (error) {
+                document.getElementById("txStatus").innerText = "An error occurred, please try again!";
+                console.error("Error deploying POAP:", error);
+            }
+        }
+
+
+    </script>
     <script src="js/jquery.slicknav.js"></script>
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>

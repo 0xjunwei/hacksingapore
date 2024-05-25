@@ -446,6 +446,7 @@ ol {
 }
 
 .hero__items {
+	height: 600px;
 	padding: 250px 0 42px 50px;
 	border-radius: 5px;
 }
@@ -453,6 +454,12 @@ ol {
 .hero__text {
 	position: relative;
 	z-index: 9;
+}
+
+.hero__text h2 {
+	padding: 10px;
+	background-color: rgba(128, 128, 128, 0.5);
+	border-radius: 10px;
 }
 
 .hero__text .label {

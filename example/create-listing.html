@@ -43,6 +43,7 @@
                 </div>
                 <div class="col-lg-2 offset-lg-8">
                     <div class="header__right">
+                        <a href="./create-listing.html"><span class="icon_pencil-edit"></span></a>
                         <a href="./login.html"><span class="icon_profile"></span></a>
                     </div>
                 </div>
@@ -51,6 +52,8 @@
         </div>
     </header>
     <!-- Header End -->
+
+    <!-- Listing Creation Start -->
     <section>
         <div class="product-page spad">
             <div class="container"></div>
@@ -75,25 +78,27 @@
                         </div>
                         <div class="form-row">
                           <div class="form-group col-lg-6">
-                            <label for="inputNumber"><p>Contacts</p></label>
-                            <input type="text" class="form-control" id="inputNumber" placeholder="Phone Number">
+                            <label for="startDate"><p>Start Date</p></label>
+                            <input type="date" class="form-control" id="startDate">
                           </div>
                           <div class="form-group col-lg-6">
-                            <label for="inputEmail"><p>Email</p></label>
-                            <input type="text" class="form-control" id="inputEmail" placeholder="Email">
+                            <label for="endDate"><p>End Date</p></label>
+                            <input type="date" class="form-control" id="endDate">
                           </div>
                         </div>
                         <p>Upload Image</p>
-                        <div class="custom-file col-lg-4">
-                            <input type="file" class="custom-file-input" id="customFile">
-                            <label class="custom-file-label" for="customFile">Choose image</label>
+                        <div class="custom-file col-lg-6">
+                            <input type="file" class="custom-file-input" id="customFile" onchange="updateFileName(this)">
+                            <label class="custom-file-label" for="customFile" id="customLabel">Choose image</label>
                         </div>
-                        <button class="offset-lg-4 btn btn-primary" type="submit">Submit form</button>
+                        <button class="offset-lg-2 btn btn-primary" type="submit">Submit form</button>
                     </form>
                 </div>
             </div>
         </div>
     </section>
+    <!-- Listing Creation End -->
+
     <!-- Footer Section Begin -->
     <footer class="footer">
         <div class="page-up">
@@ -120,7 +125,6 @@
     <script src="js/jquery.slicknav.js"></script>
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
-
 </body>
 
 </html>

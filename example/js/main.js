@@ -88,3 +88,9 @@
      });
 
 })(jQuery);
+
+function updateFileName(input) {
+    var fileName = input.files[0].name;
+    var label = $('#customLabel');
+    label.text(fileName);
+}

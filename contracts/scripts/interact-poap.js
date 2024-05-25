@@ -3,10 +3,10 @@ require("dotenv").config()
 
 async function main() {
   // Replace with your deployed POAP contract address
-  const poapAddress = "0xF72d8FF114CbB0805C8797395978D8e5b51369b4";
+  const poapAddress = "0x2853713eFc46065d203490e8Bc2561B199bcd083";
 
   // Connect to the Arbitrum Sepolia network
-  const provider = new ethers.providers.JsonRpcProvider(process.env.ARBI_SEPOLIA_RPC_URL);
+  const provider = new ethers.JsonRpcProvider(process.env.ARBI_SEPOLIA_RPC_URL);
 
   // Create a wallet instance
   const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);

@@ -3,11 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="Anime Template">
-    <meta name="keywords" content="Anime, unica, creative, html">
+    <meta name="description" content="Sign Up">
+    <meta name="keywords" content="Volunteer, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Anime | Template</title>
+    <title>Register | Dev J</title>
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -76,13 +76,13 @@
     <!-- Header End -->
 
     <!-- Normal Breadcrumb Begin -->
-    <section class="normal-breadcrumb set-bg" data-setbg="img/normal-breadcrumb.jpg">
+    <section class="normal-breadcrumb set-bg">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="normal__breadcrumb__text">
                         <h2>Sign Up</h2>
-                        <p>Welcome to the official Anime blog.</p>
+                        <p>Sign up now to start your volunteering journey!</p>
                     </div>
                 </div>
             </div>
@@ -98,32 +98,38 @@
                     <div class="login__form">
                         <h3>Sign Up</h3>
                         <form action="#">
+                            <div class="input__choose">
+                                <h5>I want to...</h5>
+                                <input type="radio" id="volunteer" name="user_type" value="volunteer" required>
+                                <label for="volunteer">Volunteer</label>
+                                <input type="radio" id="recruit" name="user_type" value="recruit" required>
+                                <label for="recruit">Recruit Volunteers</label>
+                            </div>
                             <div class="input__item">
-                                <input type="text" placeholder="Email address">
+                                <input type="text" placeholder="Email address" required>
                                 <span class="icon_mail"></span>
                             </div>
                             <div class="input__item">
-                                <input type="text" placeholder="Your Name">
+                                <input type="text" placeholder="Your Name" required>
                                 <span class="icon_profile"></span>
                             </div>
                             <div class="input__item">
-                                <input type="text" placeholder="Password">
+                                <input type="password" id="password" placeholder="Password" required>
                                 <span class="icon_lock"></span>
                             </div>
-                            <button type="submit" class="site-btn">Login Now</button>
+                            <div class="input__item">
+                                <input type="password" id="confirm_password" name="confirm_password"
+                                    placeholder="Confirm your password" required>
+                                <span class="icon_lock"></span>
+                            </div>                       
+                            <button type="submit" class="site-btn">Register</button>
                         </form>
-                        <h5>Already have an account? <a href="#">Log In!</a></h5>
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <div class="login__social__links">
-                        <h3>Login With:</h3>
-                        <ul>
-                            <li><a href="#" class="facebook"><i class="fa fa-facebook"></i> Sign in With Facebook</a>
-                            </li>
-                            <li><a href="#" class="google"><i class="fa fa-google"></i> Sign in With Google</a></li>
-                            <li><a href="#" class="twitter"><i class="fa fa-twitter"></i> Sign in With Twitter</a></li>
-                        </ul>
+                    <div class="login__register">
+                        <h3>Already have an account?</h3>
+                        <a href="login.html" class="primary-btn">Login Now</a>
                     </div>
                 </div>
             </div>

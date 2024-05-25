@@ -4,7 +4,9 @@ pragma solidity ^0.8.0;
 import "./Poap.sol";
 
 contract Factory {
-    address[] public deployedContracts;
+    address[] public deployedPOAPs;
+    
+
 
     event ContractDeployed(address indexed contractAddress);
 
@@ -20,11 +22,11 @@ contract Factory {
             _poapShortName,
             _poapURL
         );
-        deployedContracts.push(address(newContract));
+        deployedPOAPs.push(address(newContract));
         emit ContractDeployed(address(newContract));
     }
 
     function getDeployedContracts() public view returns (address[] memory) {
-        return deployedContracts;
+        return deployedPOAPs;
     }
 }

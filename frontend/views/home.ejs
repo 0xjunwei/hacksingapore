@@ -65,7 +65,7 @@
                                 <div class="hero__text">
                                     <div class="label"><%= event.NAME %></div>
                                     <p><%= event.INFO %></p>
-                                    <a href="#"><span>Volunteer Now</span> <i class="fa fa-angle-right"></i></a>
+                                    <a href="/details/<%= event.EID %>"><span>Volunteer Now</span> <i class="fa fa-angle-right"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -101,7 +101,7 @@
                                         <ul>
                                             <li><%= event.PLACE %></li>
                                         </ul>
-                                        <h5><a href="#"><%= event.NAME %></a></h5>
+                                        <h5><a href="/details/<%= event.EID %>"><%= event.NAME %></a></h5>
                                     </div>
                                 </div>
                             </div>

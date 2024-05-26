@@ -44,7 +44,7 @@
                 <div class="col-lg-3 offset-lg-7">
                     <div class="header__right">
                         <a href="./create-listing.html"><span class="icon_pencil-edit"></span></a>
-                        <button type="button" class="btn btn-dark" id="wallet">Connect Wallet</button>
+                        <button type="button" class="btn btn-dark" id="wallet" onclick="connectMetamask()">Connect Wallet</button>
                     </div>
                 </div>
             </div>
@@ -101,9 +101,10 @@
                                 </div>
                             </div>
                             <div class="volunteer__details__btn">   
-                                <a href="#" class="watch-btn"><span>Sign Up Now</span> <i
+                                <a href="#" class="watch-btn" id="signup" onclick="signUpNow()"><span>Sign Up Now</span> <i
                                     class="fa fa-angle-right"></i></a>
                             </div>
+                            <div id="txStatus" style="color: white;"></div>
                         </div>
                     </div>
                 </div>
@@ -140,6 +141,48 @@
     <script src="js/jquery.slicknav.js"></script>
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/poap_ABI.js"></script>
+    <!-- Include Web3.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.6.0/dist/web3.min.js"></script>
+    <script>
+        let account;
+        const connectMetamask = async () => {
+        if (typeof window.ethereum !== "undefined") {
+            const accounts = await ethereum.request({ method: "eth_requestAccounts" });
+            account = accounts[0];
+            document.getElementById("wallet").innerHTML =
+            "Connected";
+            document.getElementById("poap").disabled = false;
+        } else {
+            console.log("Please install MetaMask.");
+        }
+        };
+        // Modify to your contract address
+        const poapAddress = "0x32ebd51365C4591b2c300f6C76074910E876fdf1";
+        async function signUpNow() {
+            try {
+                const approvalInstance = new Web3(window.ethereum);
+                const factoryContract = new approvalInstance.eth.Contract(poap_ABI, poapAddress);
+                
+                const tx = factoryContract.methods.signUp().send({ from: account });
+
+                tx.on("transactionHash", (hash) => {
+                    document.getElementById("txStatus").innerText = "Transaction Hash: " + hash;
+                });
+
+                const receipt = await tx;
+
+                document.getElementById("txStatus").innerText += "\nSuccessfully signed up!";
+                document.getElementById("signup").disabled = true;
+
+            } catch (error) {
+                document.getElementById("txStatus").innerText = "An error occurred, please try again!";
+                console.error("Error", error);
+            }
+        }
+
+
+    </script>
 
 </body>
 

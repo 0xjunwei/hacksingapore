@@ -76,6 +76,18 @@ app.post("/upload", upload.single("poster"), (req, res) => {
   );
 });
 
+app.get("/details/:id", (req, res) => {
+  const listingId = req.params.id;
+  let sql = "SELECT NAME, INFO, PLACE, START, END, POSTER FROM EVENTS WHERE id = ?";
+  db.query(sql, [listingId], (err, results) => {
+    if (err) {
+      throw err;
+    }
+    console.log(results);
+    res.render("home", { event: results });
+  });
+});
+
 async function generateImage(eventTitle) {
   const apiKey = process.env.JIGSAWSTACK_API_KEY;
   const endpoint = "https://api.jigsawstack.com/v1/ai/image_generation";

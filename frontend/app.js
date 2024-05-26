@@ -42,7 +42,7 @@ db.connect((err) => {
 // HOME PAGE SEE LISTINGS
 
 app.get("/", (req, res) => {
-  let sql = "SELECT NAME, INFO, PLACE, START, END, POSTER FROM EVENTS";
+  let sql = "SELECT EID, NAME, INFO, PLACE, START, END, POSTER FROM EVENTS";
   db.query(sql, (err, results) => {
     if (err) {
       throw err;

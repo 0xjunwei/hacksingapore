@@ -1,4 +1,4 @@
-poap_ABI = [
+const poap_ABI = [
   {
     inputs: [
       {

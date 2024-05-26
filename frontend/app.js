@@ -84,7 +84,7 @@ app.get("/details/:id", (req, res) => {
       throw err;
     }
     console.log(results);
-    res.render("home", { event: results });
+    res.render("details", { event: results });
   });
 });
 

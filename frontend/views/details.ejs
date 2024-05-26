@@ -101,7 +101,7 @@
                                 </div>
                             </div>
                             <div class="volunteer__details__btn">   
-                                <a href="#" class="watch-btn" id="signup" onclick="signUpNow()"><span>Sign Up Now</span> <i
+                                <a href="#" class="watch-btn" id="signup" onclick="signUpNow()" disabled><span>Sign Up Now</span> <i
                                     class="fa fa-angle-right"></i></a>
                             </div>
                             <div id="txStatus" style="color: white;"></div>
@@ -152,7 +152,7 @@
             account = accounts[0];
             document.getElementById("wallet").innerHTML =
             "Connected";
-            document.getElementById("poap").disabled = false;
+            document.getElementById("signup").disabled = false;
         } else {
             console.log("Please install MetaMask.");
         }

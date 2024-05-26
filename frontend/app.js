@@ -78,7 +78,7 @@ app.post("/upload", upload.single("poster"), (req, res) => {
 
 app.get("/details/:id", (req, res) => {
   const listingId = req.params.id;
-  let sql = "SELECT NAME, INFO, PLACE, START, END, POSTER FROM EVENTS WHERE id = ?";
+  let sql = "SELECT NAME, INFO, PLACE, START, END FROM EVENTS WHERE EID = ?";
   db.query(sql, [listingId], (err, results) => {
     if (err) {
       throw err;

@@ -5,3 +5,7 @@ Factory Contract:
 
 Example poap:
 0x32ebd51365C4591b2c300f6C76074910E876fdf1
+
+
+to deploy the contracts:
+'yarn hardhat deploy --network sepolia'
